@@ -839,13 +839,13 @@ export default {
             trigger: 'change',
           },
         ],
-        address: [
-          {
-            required: true,
-            message: 'This field cannot be empty',
-            trigger: 'change',
-          },
-        ],
+        // address: [
+        //   {
+        //     required: true,
+        //     message: 'This field cannot be empty',
+        //     trigger: 'change',
+        //   },
+        // ],
         location: [
           {
             required: true,

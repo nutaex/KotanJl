@@ -145,10 +145,28 @@
       </el-tab-pane>
       <el-tab-pane label="Project media display" name="fourth">
         <div class="projectDescTitle">
-          <span style="margin-right: 20px;">Do not display developer project media</span>
-          <el-switch v-model="onlyMedia" active-color="#13ce66" @change="switchChange">
+          <span style="margin-right: 20px;">Do not display developer project image</span>
+          <el-switch v-model="onlyMediaImage" active-color="#13ce66" @change="switchChange()">
           </el-switch>
-          <div style="font-size: 14px;color: #999;margin-top: 10px;">(After click this featured, this apps wont display any media (image, video, file, vr tour) that uploaded by developer)</div>
+          <div style="font-size: 14px;color: #999;margin-top: 10px;">(After click this featured, this apps wont display any image that uploaded by developer)</div>
+          <br />
+          <br />
+          <span style="margin-right: 20px;">Do not display developer project video</span>
+          <el-switch v-model="onlyMediaVideo" active-color="#13ce66" @change="switchChange()">
+          </el-switch>
+          <div style="font-size: 14px;color: #999;margin-top: 10px;">(After click this featured, this apps wont display any video that uploaded by developer)</div>
+          <br />
+          <br />
+          <span style="margin-right: 20px;">Do not display developer project file</span>
+          <el-switch v-model="onlyMediaFile" active-color="#13ce66" @change="switchChange()">
+          </el-switch>
+          <div style="font-size: 14px;color: #999;margin-top: 10px;">(After click this featured, this apps wont display any file that uploaded by developer)</div>
+          <br />
+          <br />
+          <span style="margin-right: 20px;">Do not display developer project vr tour</span>
+          <el-switch v-model="onlyMediaVRTour" active-color="#13ce66" @change="switchChange()">
+          </el-switch>
+          <div style="font-size: 14px;color: #999;margin-top: 10px;">(After click this featured, this apps wont display any vr tour that uploaded by developer)</div>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -196,7 +214,10 @@ export default {
         height: 120,
         width: 900,
       },
-      onlyMedia: 0,
+      onlyMediaImage: 0,
+      onlyMediaVideo: 0,
+      onlyMediaFile: 0,
+      onlyMediaVRTour: 0,
       editorArr: [], //获取数据时富文本编辑器的图片数组
       updateEditorArr: [], //提交时富文本编辑器里面的图片数组
     };
@@ -223,9 +244,9 @@ export default {
         }
       );
     },
-    queryBrokeProjectSet(){
+    queryBrokeProjectSet () {
       this.$Geting(this.$api.queryBrokeProjectSet, { projectId: this.id }).then((res) => {
-        if(res.code==='0'){
+        if (res.code === '0') {
           this.detailForm.description = res.datas.description
           this.detailForm.descriptionCn = res.datas.descriptionCn
           this.detailForm.keyPoints = res.datas.keyPoints
@@ -242,7 +263,10 @@ export default {
           this.priceForm.price9Label = res.datas.price9Label
           this.priceForm.price10Label = res.datas.price10Label
 
-          this.onlyMedia = res.datas.onlyMedia===0?false:true
+          this.onlyMediaImage = res.datas.onlyMediaImage === 0 ? false : true
+          this.onlyMediaVideo = res.datas.onlyMediaVideo === 0 ? false : true
+          this.onlyMediaFile = res.datas.onlyMediaFile === 0 ? false : true
+          this.onlyMediaVRTour = res.datas.onlyMediaVRTour === 0 ? false : true
 
           this.fillDataToForm()
         }
@@ -327,7 +351,7 @@ export default {
     handleClick (tab, event) {
       console.log(tab, event);
     },
-    switchChange(e){
+    switchChange (e) {
       console.log(e)
       this.updateBrokeProjectSetFn('media')
     },
@@ -362,9 +386,13 @@ export default {
         case "media":
           params = {
             type: type,
-            onlyMedia: _this.onlyMedia?1:0,
+            onlyMediaImage: _this.onlyMediaImage ? 1 : 0,
+            onlyMediaVideo: _this.onlyMediaVideo ? 1 : 0,
+            onlyMediaFile: _this.onlyMediaFile ? 1 : 0,
+            onlyMediaVRTour: _this.onlyMediaVRTour ? 1 : 0,
             projectId: _this.id
           }
+          break
       }
 
       _this.$Posting(_this.$api.updateBrokeProjectSet, params).then((res) => {
@@ -456,11 +484,11 @@ export default {
 </script>
 
 <style lang="less">
-.el-tabs{
+.el-tabs {
   padding: 20px;
 }
 
-.el-tabs__item{
+.el-tabs__item {
   font-weight: 600;
   font-size: 16px;
 }
